@@ -1,5 +1,11 @@
 package fpstyle;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
 public class Util {
     public static Command generateCommand(String[] args) {
 
@@ -41,39 +47,87 @@ public class Util {
         return new Command(message, outputFilePath, inputFilePath, cipher, mode, outputMethod, inputMethod, key);
     }
 
-    public static String executeCommand(Command command) {
+    public static void executeCommand(Command command) {
 
-        String result = "";
+        String transformedMessage = "";
 
+        // input
+        switch (command.getInputMethod()) {
+            case "console":
+                transformedMessage = command.getMessage();
+            case "file":
+                transformedMessage = readFromFile(command.getInputFilePath());
+
+        }
+
+        // process
         switch (command.getMode()) {
-
             case "enc":
                 switch (command.getCipher()) {
-                    case "shift" -> result = encryptShift(command.getMessage(), command.getKey());
-                    case "unicode" -> result = encryptUnicode(command.getMessage(), command.getKey());
+                    case "shift" -> transformedMessage = encryptShift(command.getMessage(), command.getKey());
+                    case "unicode" -> transformedMessage = encryptUnicode(command.getMessage(), command.getKey());
                 }
                 break;
 
             case "dec":
-                result = switch (command.getCipher()) {
+                transformedMessage = switch (command.getCipher()) {
                     case "shift" -> decryptShift(command.getMessage(), command.getKey());
                     case "unicode" -> decryptUnicode(command.getMessage(), command.getKey());
-                    default -> result;
+                    default -> transformedMessage;
                 };
                 break;
         }
-        return result;
+
+        //output
+        switch (command.getOutputMethod()) {
+            case "console" -> System.out.println(transformedMessage);
+            case "file" -> outputToFile(transformedMessage, command.getOutputFilePath());
+        }
+    }
+
+
+    private static String readFromFile(String inputFilePath) {
+
+        StringBuilder fileContent = new StringBuilder();
+
+        File inputFile = new File(inputFilePath);
+
+        // Print location of input file
+        System.out.println(inputFile.getAbsolutePath());
+
+        try (Scanner scanner = new Scanner(inputFile)) {
+            while (scanner.hasNextLine()) {
+                fileContent.append(scanner.nextLine());
+            }
+        } catch (FileNotFoundException e) {
+            System.out.printf("File %s not found.\n", inputFilePath);
+        }
+
+        return fileContent.toString();
+    }
+
+    private static void outputToFile(String transformedMessage, String outputFilePath) {
+        File outputFile = new File(outputFilePath);
+
+        // Log location of output file
+        System.out.println(outputFile.getAbsolutePath());
+        try (FileWriter writer = new FileWriter(outputFile)) {
+            writer.write(transformedMessage);
+
+        } catch (IOException e) {
+            System.out.printf("An exception occurred %s", e.getMessage());
+        }
     }
 
     private static String encryptShift(String messageToEncrypt, int key) {
         StringBuilder builder = new StringBuilder();
 
-        for(char letter: messageToEncrypt.toCharArray()) {
+        for (char letter : messageToEncrypt.toCharArray()) {
 
             if (Character.isAlphabetic(letter) && Character.isUpperCase(letter)) {
-                builder.append((char)((letter + key - 'A') % 26 + 'A'));
+                builder.append((char) ((letter + key - 'A') % 26 + 'A'));
             } else if (Character.isAlphabetic(letter) && Character.isLowerCase(letter)) {
-                builder.append((char)((letter + key - 'a') % 26 + 'a'));
+                builder.append((char) ((letter + key - 'a') % 26 + 'a'));
             } else {
                 builder.append(letter);
             }
@@ -84,12 +138,12 @@ public class Util {
     private static String decryptShift(String messageToDecrypt, int key) {
         StringBuilder builder = new StringBuilder();
 
-        for(char letter: messageToDecrypt.toCharArray()) {
+        for (char letter : messageToDecrypt.toCharArray()) {
 
             if (Character.isAlphabetic(letter) && Character.isUpperCase(letter)) {
-                builder.append((char)((letter + 26 - key - 'A') % 26 + 'A'));
-            } else if (Character.isAlphabetic(letter) && Character.isLowerCase(letter)){
-                builder.append((char)((letter + 26 - key - 'a') % 26 + 'a'));
+                builder.append((char) ((letter + 26 - key - 'A') % 26 + 'A'));
+            } else if (Character.isAlphabetic(letter) && Character.isLowerCase(letter)) {
+                builder.append((char) ((letter + 26 - key - 'a') % 26 + 'a'));
             } else {
                 builder.append(letter);
             }
