@@ -85,7 +85,6 @@ public class Util {
         }
     }
 
-
     private static String readFromFile(String inputFilePath) {
 
         StringBuilder fileContent = new StringBuilder();
