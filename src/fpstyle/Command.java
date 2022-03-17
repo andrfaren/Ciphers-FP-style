@@ -56,5 +56,4 @@ public class Command {
         return key;
     }
 
-
 }
