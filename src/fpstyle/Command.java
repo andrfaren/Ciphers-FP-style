@@ -2,14 +2,14 @@ package fpstyle;
 
 public class Command {
 
-    private final String message;
-    private final String outputFilePath;
-    private final String inputFilePath;
-    private final String cipher;
-    private final String mode;
-    private final String outputMethod;
-    private final String inputMethod;
-    private final int key;
+    public final String message;
+    public final String outputFilePath;
+    public final String inputFilePath;
+    public final String cipher;
+    public final String mode;
+    public final String outputMethod;
+    public final String inputMethod;
+    public final int key;
 
 
     public Command(String message, String outputFilePath, String inputFilePath, String cipher, String mode,
@@ -23,37 +23,4 @@ public class Command {
         this.inputMethod = inputMethod;
         this.key = key;
     }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public String getOutputFilePath() {
-        return outputFilePath;
-    }
-
-    public String getInputFilePath() {
-        return inputFilePath;
-    }
-
-    public String getCipher() {
-        return cipher;
-    }
-
-    public String getMode() {
-        return mode;
-    }
-
-    public String getOutputMethod() {
-        return outputMethod;
-    }
-
-    public String getInputMethod() {
-        return inputMethod;
-    }
-
-    public int getKey() {
-        return key;
-    }
-
 }
