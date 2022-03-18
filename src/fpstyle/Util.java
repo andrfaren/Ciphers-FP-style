@@ -52,36 +52,36 @@ public class Util {
         String transformedMessage = "";
 
         // input
-        switch (command.inputMethod) {
+        switch (command.inputMethod()) {
             case "console":
-                transformedMessage = command.message;
+                transformedMessage = command.message();
             case "file":
-                transformedMessage = readFromFile(command.inputFilePath);
+                transformedMessage = readFromFile(command.inputFilePath());
 
         }
 
         // process
-        switch (command.mode) {
+        switch (command.mode()) {
             case "enc":
-                switch (command.cipher) {
-                    case "shift" -> transformedMessage = encryptShift(command.message, command.key);
-                    case "unicode" -> transformedMessage = encryptUnicode(command.message, command.key);
+                switch (command.cipher()) {
+                    case "shift" -> transformedMessage = encryptShift(command.message(), command.key());
+                    case "unicode" -> transformedMessage = encryptUnicode(command.message(), command.key());
                 }
                 break;
 
             case "dec":
-                transformedMessage = switch (command.cipher) {
-                    case "shift" -> decryptShift(command.message, command.key);
-                    case "unicode" -> decryptUnicode(command.message, command.key);
+                transformedMessage = switch (command.cipher()) {
+                    case "shift" -> decryptShift(command.message(), command.key());
+                    case "unicode" -> decryptUnicode(command.message(), command.key());
                     default -> transformedMessage;
                 };
                 break;
         }
 
         //output
-        switch (command.outputMethod) {
+        switch (command.outputMethod()) {
             case "console" -> System.out.println(transformedMessage);
-            case "file" -> outputToFile(transformedMessage, command.outputFilePath);
+            case "file" -> outputToFile(transformedMessage, command.outputFilePath());
         }
     }
 
