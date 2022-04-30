@@ -129,58 +129,33 @@ public class Util {
     }
 
     private static String decryptShift(String messageToDecrypt, int key) {
-        StringBuilder builder = new StringBuilder();
 
-        for (char letter : messageToDecrypt.toCharArray()) {
+        String decryptedMessage = messageToDecrypt.chars()
+                .map(ch -> Character.isUpperCase(ch) ? (ch + 26 - key - 'A') % 26 + 'A' : (ch + 26 - key - 'a') % 26 + 'a')
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
 
-            if (Character.isAlphabetic(letter) && Character.isUpperCase(letter)) {
-                builder.append((char) ((letter + 26 - key - 'A') % 26 + 'A'));
-            } else if (Character.isAlphabetic(letter) && Character.isLowerCase(letter)) {
-                builder.append((char) ((letter + 26 - key - 'a') % 26 + 'a'));
-            } else {
-                builder.append(letter);
-            }
-        }
-
-        return builder.toString();
+        return decryptedMessage;
     }
 
     private static String decryptUnicode(String messageToDecrypt, int key) {
 
-        char[] messageArray = messageToDecrypt.toCharArray();
+        String decryptedMessage = messageToDecrypt.chars()
+                .map(ch -> ch - key < 32 ? ch - key + 95 : ch - key)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
 
-        char[] decryptedCharArray = new char[messageArray.length];
-
-        // Move each char in original array by key and populate decrypted array
-        for (int i = 0; i < decryptedCharArray.length; i++) {
-            if (messageArray[i] - key < 32) {
-                decryptedCharArray[i] = (char) (messageArray[i] - key + 95);
-
-            } else {
-                decryptedCharArray[i] = (char) (messageArray[i] - key);
-            }
-        }
-
-        return String.valueOf(decryptedCharArray);
+        return decryptedMessage;
     }
 
     private static String encryptUnicode(String messageToEncrypt, int key) {
 
-        char[] messageArray = messageToEncrypt.toCharArray();
+        String encryptedMessage = messageToEncrypt.chars()
+                .map(ch -> ch + key > 126 ? (ch + key) % 126 + 31 : ch + key)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
 
-        char[] encryptedCharArray = new char[messageArray.length];
-
-        // Move each char in original array by key and populate encrypted array
-        for (int i = 0; i < encryptedCharArray.length; i++) {
-            if (messageArray[i] + key > 126) {
-                encryptedCharArray[i] = (char) ((messageArray[i] + key) % 126 + 31);
-
-            } else {
-                encryptedCharArray[i] = (char) (messageArray[i] + key);
-            }
-        }
-
-        return String.valueOf(encryptedCharArray);
+        return encryptedMessage;
     }
 
 
