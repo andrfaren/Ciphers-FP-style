@@ -119,19 +119,13 @@ public class Util {
     }
 
     private static String encryptShift(String messageToEncrypt, int key) {
-        StringBuilder builder = new StringBuilder();
 
-        for (char letter : messageToEncrypt.toCharArray()) {
+        String encryptedMessage = messageToEncrypt.chars()
+                .map(ch -> Character.isUpperCase(ch) ? (ch + key - 'A') % 26 + 'A' : (ch + key - 'a') % 26 + 'a')
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
 
-            if (Character.isAlphabetic(letter) && Character.isUpperCase(letter)) {
-                builder.append((char) ((letter + key - 'A') % 26 + 'A'));
-            } else if (Character.isAlphabetic(letter) && Character.isLowerCase(letter)) {
-                builder.append((char) ((letter + key - 'a') % 26 + 'a'));
-            } else {
-                builder.append(letter);
-            }
-        }
-        return builder.toString();
+        return encryptedMessage;
     }
 
     private static String decryptShift(String messageToDecrypt, int key) {
@@ -151,9 +145,9 @@ public class Util {
         return builder.toString();
     }
 
-    private static String decryptUnicode(String message, int key) {
+    private static String decryptUnicode(String messageToDecrypt, int key) {
 
-        char[] messageArray = message.toCharArray();
+        char[] messageArray = messageToDecrypt.toCharArray();
 
         char[] decryptedCharArray = new char[messageArray.length];
 
@@ -170,9 +164,9 @@ public class Util {
         return String.valueOf(decryptedCharArray);
     }
 
-    private static String encryptUnicode(String message, int key) {
+    private static String encryptUnicode(String messageToEncrypt, int key) {
 
-        char[] messageArray = message.toCharArray();
+        char[] messageArray = messageToEncrypt.toCharArray();
 
         char[] encryptedCharArray = new char[messageArray.length];
 
