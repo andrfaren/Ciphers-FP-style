@@ -118,27 +118,35 @@ public class Util {
         }
     }
 
-    private static String encryptShift(String messageToEncrypt, int key) {
+    public static String encryptShift(String messageToEncrypt, int key) {
 
         String encryptedMessage = messageToEncrypt.chars()
-                .map(ch -> Character.isUpperCase(ch) ? (ch + key - 'A') % 26 + 'A' : (ch + key - 'a') % 26 + 'a')
+                .map(ch -> {
+                    if (Character.isUpperCase(ch)) return (ch + key - 'A') % 26 + 'A';
+                    else if (Character.isLowerCase(ch)) return (ch + key - 'a') % 26 + 'a';
+                    else return ch;
+                })
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
 
         return encryptedMessage;
     }
 
-    private static String decryptShift(String messageToDecrypt, int key) {
+    public static String decryptShift(String messageToDecrypt, int key) {
 
         String decryptedMessage = messageToDecrypt.chars()
-                .map(ch -> Character.isUpperCase(ch) ? (ch + 26 - key - 'A') % 26 + 'A' : (ch + 26 - key - 'a') % 26 + 'a')
+                .map(ch -> {
+                    if (Character.isUpperCase(ch)) return (ch + 26 - key - 'A') % 26 + 'A';
+                    else if (Character.isLowerCase(ch)) return (ch + 26 - key - 'a') % 26 + 'a';
+                    else return ch;
+                })
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
 
         return decryptedMessage;
     }
 
-    private static String decryptUnicode(String messageToDecrypt, int key) {
+    public static String decryptUnicode(String messageToDecrypt, int key) {
 
         String decryptedMessage = messageToDecrypt.chars()
                 .map(ch -> ch - key < 32 ? ch - key + 95 : ch - key)
@@ -148,7 +156,7 @@ public class Util {
         return decryptedMessage;
     }
 
-    private static String encryptUnicode(String messageToEncrypt, int key) {
+    public static String encryptUnicode(String messageToEncrypt, int key) {
 
         String encryptedMessage = messageToEncrypt.chars()
                 .map(ch -> ch + key > 126 ? (ch + key) % 126 + 31 : ch + key)
