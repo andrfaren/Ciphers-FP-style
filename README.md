@@ -7,8 +7,9 @@ The application is run through the command line (Main method) and accepts the fo
 - \- mode [enc | dec] specifies either encrpytion nor decryption
 - \- in [filename] specifies the input filename
 - \- out [filename] specifies the outputfilename
-- \- key [unsigned integer] specifies the degree of shift
+- \- key [unsigned integer i] specifies the degree of shift
 - \- alg [unicode | shift] specifies the algorithm 
+- \- data [String s] specifies a string to be encrypted or decrypted (if no file input/output is needed)
 
 ### Example 1:
 
