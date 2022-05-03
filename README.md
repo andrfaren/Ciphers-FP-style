@@ -15,7 +15,7 @@ The application is run through the command line (Main method) and accepts the fo
 ```bash
 java Main -mode enc -in plaintext.txt -out cipher-text.txt -key 5 -alg unicode
 ```
-
+.
 ### Example 2:
 ```bash
 java Main -key 5 -alg unicode -data "\jqhtrj%yt%m~ujwxpnqq&" -mode dec
