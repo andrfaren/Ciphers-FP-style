@@ -1,6 +1,10 @@
 # Ciphers-FP-style
 Ciphers re-written using Java 8+ language features and the functional programming style.
 
+Supports the following ciphers:
+  - Caesar (shift)
+  - Unicode
+
 ## Description
 The application is run through the command line (Main method) and accepts the following commands and options:
 
