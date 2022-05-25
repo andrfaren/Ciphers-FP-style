@@ -1,5 +1,5 @@
 # Ciphers-FP-style
-Ciphers re-written using Java 8+ language features and the functional programming style.
+Ciphers re-written using Java 8+ language features and functional programming.
 
 Supports the following ciphers:
   - Caesar (shift)
